@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>bagas199</groupId>
+	<artifactId>wsmpj</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
+
+	<name>wsmpj</name>
+	<description>wildfly-swarm-multi-package-jsf</description>
+
+	<properties>
+		<version.wildfly-swarm>2017.9.4</version.wildfly-swarm>
+		<version.slf4j>1.7.25</version.slf4j>
+		<version.log4j2>2.8.2</version.log4j2>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<!-- LOCAL DEVELOPMENT PROFILE -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<profile>
+			<id>swarm-localdev</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.wildfly.swarm</groupId>
+					<artifactId>bom</artifactId>
+					<version>${version.wildfly-swarm}</version>
+					<type>pom</type>
+				</dependency>
+
+				<dependency>
+					<groupId>org.wildfly.swarm</groupId>
+					<artifactId>jsf</artifactId>
+					<version>${version.wildfly-swarm}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.wildfly.swarm</groupId>
+					<artifactId>undertow</artifactId>
+					<version>${version.wildfly-swarm}</version>
+				</dependency>
+
+				<!-- SWARM -->
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+						<excludes>
+							<exclude>project-defaults.yml</exclude>
+							<exclude>project-localdev.yml</exclude>
+							<exclude>log4j2.xml</exclude>
+						</excludes>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/swarm-localdev</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.swarm</groupId>
+						<artifactId>wildfly-swarm-plugin</artifactId>
+						<version>${version.wildfly-swarm}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>package</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<bundleDependencies>true</bundleDependencies>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${version.slf4j}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${version.log4j2}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${version.log4j2}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${version.log4j2}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+	
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+	
+		<!-- Faces Library -->
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.2.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>wsmpj</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<target>1.8</target>
+					<source>1.8</source>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+
+				<configuration>
+					<warName>wsmpj</warName>
+					<attachClasses>true</attachClasses>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

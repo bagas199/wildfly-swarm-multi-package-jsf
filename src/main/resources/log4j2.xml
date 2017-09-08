@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<File name="file" fileName="./logs/wsmpj.log" append="false">
+			<PatternLayout pattern="%-5p %d{dd-MM HH:mm:ss,SSS} [%t] (%F:%M:%L) -%m%n" />
+		</File>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%-5p %d{dd-MM HH:mm:ss,SSS} [%t] (%F:%M:%L) -%m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+</Configuration>

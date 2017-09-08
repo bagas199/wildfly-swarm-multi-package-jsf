@@ -1,0 +1,10 @@
+logger:
+    level: DEBUG
+
+swarm:
+  context:
+    path: /wsmpj
+  
+  http:
+    port: 8080
+    
